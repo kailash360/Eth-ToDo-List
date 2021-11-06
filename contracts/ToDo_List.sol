@@ -21,6 +21,16 @@ contract ToDo_List {
     taskCount++;
     tasks[taskCount] = new Task(taskCount,_content,false);
   }
-  
-    
+
+  //Event to be emitted when a task is completed
+  event TaskCompleted (uint taskId,bool completed);
+
+  //To toggle whether a task is completed or not
+  function toggleCompleted(uint _taskId) public{
+    Task memory task = tasks[taskId];
+    task.completed = !task.completed;
+    tasks[taskId] = task;
+
+    emit(task.taskId,task.completed);
+  }
 }
