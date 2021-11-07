@@ -9,7 +9,7 @@ contract ToDo_List {
   //To store details of a task 
   struct Task {
     uint taskId; 
-    string memory content;
+    string content;
     bool completed;
   }
 
@@ -17,9 +17,9 @@ contract ToDo_List {
   mapping (uint=>Task) tasks;
 
   //To add a new task to the list
-  function addTask(string _content) public{
+  function addTask(string memory _content) public{
     taskCount++;
-    tasks[taskCount] = new Task(taskCount,_content,false);
+    tasks[taskCount] = Task(taskCount,_content,false);
   }
 
   //Event to be emitted when a task is completed
@@ -27,10 +27,10 @@ contract ToDo_List {
 
   //To toggle whether a task is completed or not
   function toggleCompleted(uint _taskId) public{
-    Task memory task = tasks[taskId];
+    Task memory task = tasks[_taskId];
     task.completed = !task.completed;
-    tasks[taskId] = task;
+    tasks[_taskId] = task;
 
-    emit(task.taskId,task.completed);
+    emit TaskCompleted(task.taskId,task.completed);
   }
 }
