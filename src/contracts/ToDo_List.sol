@@ -14,7 +14,7 @@ contract ToDo_List {
   }
 
   //To store all the tasks
-  mapping (uint=>Task) tasks;
+  mapping (uint=>Task) public tasks;
 
   //To add a new task to the list
   function addTask(string memory _content) public{

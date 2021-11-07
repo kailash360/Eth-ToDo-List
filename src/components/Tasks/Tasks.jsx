@@ -1,13 +1,16 @@
 import React from 'react'
 import Card from './Card/Card'
 
-function Tasks() {
+function Tasks({tasks,methods,account}) {
 
-    const Tasks = [1,2,3]
+    const toggleCompleted = async (taskId) => {
+        const result = await methods.toggleCompleted(parseInt(taskId)).send({from:account})
+        console.log(result)
+    }
 
     return (
         <div className="container" style={{display: "flex", flexDirection: "row", flexWrap:"wrap"}}>
-            {Tasks.map(task=><Card/>)}            
+            {tasks.map(task=><Card task={task} toggleCompleted={toggleCompleted}/>)}            
         </div>
     )
 }

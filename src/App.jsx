@@ -8,27 +8,47 @@ const {TRUFFLE_CONTRACT_ABI,TRUFFLE_CONTRACT_ADDRESS} = require('./truffle-confi
 
 function App() {
 
+  //States to hold the data 
+  const [tasks,setTasks] = useState([])
+  const [account,setAccount] = useState("")
+  const [methods,setMethods] = useState([])
+
+  //To connect to theblockchain and fetch data
   const load = async () => {
+
+    //Connect to blockchain netwrk set up using Ganache
     const web3 = new Web3("http://localhost:7545");
-    const network = await web3.eth.net.getId()
-    const accounts = await web3.eth.getAccounts()
+    await window.ethereum.enable();
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     const contract = new web3.eth.Contract(TRUFFLE_CONTRACT_ABI,TRUFFLE_CONTRACT_ADDRESS)
 
-    console.log(network)
-    console.log(accounts)
-    console.log(contract)
+    //Fetch the data by running their functions
+    const taskCount = await contract.methods.taskCount().call()
+
+    for (let i=1; i<=taskCount; i++) {
+      const task = await contract.methods.tasks(i).call()
+      tasks.push(task)
+      setTasks(tasks)
+    }
+
+    const methods = contract.methods
+
+    //Update the states
+    setTasks(tasks)
+    setAccount(accounts[0])
+    setMethods(methods)
   }
 
   useEffect(() => {
     load()
-  }, [])
+  },[tasks])
 
 
   return (
     <div className="App">
       <Navbar/>
-      <Input></Input>
-      <Tasks/>
+      <Input methods={methods} account={account} ></Input>
+      <Tasks tasks={tasks} methods={methods} account={account}/>
     </div>
   );
 }
