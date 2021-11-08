@@ -4,11 +4,11 @@ import Web3 from 'web3'
 import Navbar from './components/Navbar/Navbar'
 import Input from './components/Input/Input'
 import Tasks from './components/Tasks/Tasks'
-const {TRUFFLE_CONTRACT_ABI,TRUFFLE_CONTRACT_ADDRESS} = require('./truffle-config')
+const {TRUFFLE_CONTRACT_ABI,TRUFFLE_CONTRACT_ADDRESS} = require('./config.js')
 
 function App() {
 
-  //States to hold the data 
+  //States to hold the data
   const [tasks,setTasks] = useState([])
   const [account,setAccount] = useState("")
   const [methods,setMethods] = useState([])
